@@ -4,7 +4,9 @@
   "description": "Convert WPHTML to JSON and maybe one day PHP",
   "main": "server.js",
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "start": "node server.js"
+  },
   "author": "happyprime",
   "license": "MIT",
   "dependencies": {
