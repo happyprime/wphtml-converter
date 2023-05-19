@@ -4,6 +4,7 @@
   "description": "Convert WPHTML to JSON and maybe one day PHP",
   "main": "server.js",
   "type": "module",
+  "engines": { "node": ">=16.x" },
   "scripts": {
     "start": "node server.js"
   },
