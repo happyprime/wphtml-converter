@@ -6,29 +6,36 @@
 <body>
 	<h1>WPHTML Converter</h1>
 	<p>Convert WordPress block HTML to its JSON / JavaScript object form.</p>
-	<form action="/process" method="POST">
-		<textarea name="block" rows="5" cols="40"></textarea>
-		<br>
-		<button type="submit">Submit</button>
-	</form>
+	<textarea name="block" rows="5" cols="40"></textarea>
+	<br>
+	<button type="submit">Submit</button>
 	<pre>
 		<code id="result"></code>
 	</pre>
-	<script type="text/javascript">
-		const form = document.querySelector('form');
-		const resultDiv = document.getElementById('result');
+	<script type="module">
+		import { parse } from './parser.js';
 
-		form.addEventListener('submit', async (event) => {
-			event.preventDefault();
+		const parseBlock = (block) => {
+			let data = `[\n\t'${block.blockName}',\n${JSON.stringify(block.attrs, null, "\t")},\n\t[`;
 
-			const data = new URLSearchParams(new FormData(form));
-			const response = await fetch(form.action, {
-				method: form.method,
-				body: data
+			block.innerBlocks?.forEach((innerBlock) => {
+				data += `\n\t\t` + parseBlock(innerBlock) + `\n\t`;
 			});
 
-			const processedData = await response.text();
-			resultDiv.textContent = processedData;
+			data += `]\n],`;
+
+			return data;
+		};
+
+		document.querySelector( 'button' ).addEventListener( 'click', ( evt ) => {
+			evt.preventDefault();
+
+			const blocks = parse( document.querySelector('textarea').value );
+			let data = '';
+
+			blocks.forEach( block => { data += parseBlock(block) });
+
+			document.querySelector('#result').innerText = data;
 		});
 	</script>
 </body>
