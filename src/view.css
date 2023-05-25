@@ -1,0 +1,7 @@
+.wp-site-blocks .toggle-block-hidden {
+	display: none;
+}
+
+.editor-styles-wrapper .wp-block-happyprime-toggle-block {
+	display: inline-block;
+}

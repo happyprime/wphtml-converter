@@ -1,13 +1,20 @@
 {
-  "name": "wphtml-converter",
-  "version": "1.0.0",
-  "description": "Convert WPHTML to JSON and maybe one day PHP",
-  "engines": {
-    "node": ">=16.x"
-  },
-  "author": "happyprime",
-  "license": "GPL-3.0-or-later",
-  "devDependencies": {
-    "@wordpress/block-serialization-spec-parser": "^4.33.0"
-  }
+	"name": "wphtml-converter",
+	"version": "1.0.0",
+	"description": "Convert WPHTML to JSON and maybe one day PHP",
+	"engines": {
+		"node": ">=16.x"
+	},
+	"author": "happyprime",
+	"license": "GPL-3.0-or-later",
+	"devDependencies": {
+		"@wordpress/scripts": "^26.5.0"
+	},
+	"scripts": {
+		"build": "wp-scripts build",
+		"start": "wp-scripts start",
+		"lint": "wp-scripts lint-js",
+		"fix": "wp-scripts lint-js --fix",
+		"lint:pkg-json": "wp-scripts lint-pkg-json"
+	}
 }
