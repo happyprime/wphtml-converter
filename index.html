@@ -4,6 +4,16 @@
 	<meta charset="UTF-8">
 	<title>WPHTML Converter</title>
 	<style>
+		body {
+			font-family: sans-serif;
+			color: #333;
+		}
+
+		div {
+			max-width: 720px;
+			margin: 5rem auto 0;
+		}
+
 		textarea {
 			width: 100%;
 			height: 33vh;
@@ -24,14 +34,16 @@
 </head>
 
 <body>
-	<h1>WPHTML Converter</h1>
-	<p>Convert WordPress block HTML to its JSON / JavaScript object form.</p>
-	<textarea></textarea>
-	<button type="submit">Convert to JS</button>
-	<pre><code></code></pre>
+	<div>
+		<h1>WPHTML Converter</h1>
+		<p>Convert WordPress block HTML to its JSON / JavaScript object form.</p>
+		<textarea></textarea>
+		<button type="submit">Convert to JS</button>
+		<pre><code></code></pre>
+	</div>
 
 	<script type="module">
-		import { parse } from './parser.js';
+		import { parse } from './parser.js?ver=af7ff631d32';
 
 		{
 			const parseBlock = (block) => {
