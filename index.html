@@ -30,6 +30,13 @@
 			background: #ededed;
 			padding: 1.5rem;
 		}
+
+		pre a {
+			color: rgb(0, 0, 255);
+			display: block;
+			width: 100%;
+			text-align: right;
+		}
 	</style>
 </head>
 
@@ -39,7 +46,7 @@
 		<p>Convert WordPress block HTML to its JSON / JavaScript object form.</p>
 		<textarea></textarea>
 		<button type="submit">Convert to JS</button>
-		<pre><code></code></pre>
+		<pre><a id="copy-js-code" href="">Copy JS code</a><code id="js-code"></code></pre>
 		<p>Built by <a href="https://happyprime.co/">Happy Prime</a>, <a
 				href="https://github.com/happyprime/wphtml-converter/">contributors welcome</a>.</p>
 	</div>
@@ -139,6 +146,11 @@
 			}
 
 			document.querySelector('button').addEventListener('click', handleConvertJS);
+
+			document.querySelector('#copy-js-code').addEventListener('click', (evt) => {
+				evt.preventDefault();
+				navigator.clipboard.writeText(document.querySelector('#js-code').innerText);
+			})
 		}
 	</script>
 </body>
