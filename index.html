@@ -40,21 +40,71 @@
 		<textarea></textarea>
 		<button type="submit">Convert to JS</button>
 		<pre><code></code></pre>
-		<p>Built by <a href="https://happyprime.co/">Happy Prime</a>, <a href="https://github.com/happyprime/wphtml-converter/">contributors welcome</a>.</p>
+		<p>Built by <a href="https://happyprime.co/">Happy Prime</a>, <a
+				href="https://github.com/happyprime/wphtml-converter/">contributors welcome</a>.</p>
 	</div>
 
 	<script type="module">
 		import { parse } from './parser.js?ver=af7ff631d32';
 
 		{
-			const parseBlock = (block) => {
-				let data = `[\n\t'${block.blockName}',\n${JSON.stringify(block.attrs, null, "\t")},\n\t[`;
+			/**
+			 * Auto-indent a string of JavaScript code to fit our expected
+			 * copy/paste patterns.
+			 *
+			 * Props to everyone's code who powered ChatGPT because this took
+			 * like 3 minutes to prompt. 🙃
+			 *
+			 * @param {string} code
+			 * @returns {string}
+			 */
+			const format = ( code ) => {
+				const indentString = '\t';
+				let indentLevel = 0;
+				let output = '';
+
+				// Patterns for matching opening brackets, closing brackets, and commas.
+				const openingBrackets = /(\[|\{)/g;
+				const closingBrackets = /(\]|\})/g;
+				const commas = /,/g;
+
+				// Split the code string into individual characters.
+				const characters = code.split('');
+
+				for (let i = 0; i < characters.length; i++) {
+					const char = characters[i];
+
+					if (char.match(openingBrackets)) {
+						// Increase the indent level after an opening bracket.
+						indentLevel++;
+						output += char + '\n' + indentString.repeat(indentLevel);
+					} else if (char.match(closingBrackets)) {
+						// Decrease the indent level after a closing bracket.
+						indentLevel--;
+						output += '\n' + indentString.repeat(indentLevel) + char;
+					} else if (char.match(commas)) {
+						// Add a new line after commas.
+						output += char + '\n' + indentString.repeat(indentLevel);
+					} else {
+						output += char;
+					}
+				}
+
+				// Remove extra whitespace from empty brackets
+				output = output.replace(/\[\s*\]/g, '[]');
+				output = output.replace(/\{\s*\}/g, '{}');
+
+				return output;
+			}
+
+			const parseBlock = ( block ) => {
+				let data = `['${block.blockName}',${JSON.stringify(block.attrs, null, "")},[`;
 
 				block.innerBlocks?.forEach((innerBlock) => {
-					data += `\n\t\t` + parseBlock(innerBlock) + `\n\t`;
+					data += parseBlock(innerBlock);
 				});
 
-				data += `]\n],`;
+				data += `]],`;
 
 				return data;
 			};
@@ -62,12 +112,17 @@
 			document.querySelector('button').addEventListener('click', (evt) => {
 				evt.preventDefault();
 
-				const blocks = parse(document.querySelector('textarea').value);
+				// Remove any newlines or tabs to avoid null blocks.
+				let wphtml = document.querySelector('textarea').value.replace(/\n|\t/g, '');
+
+				// Parse the HTML into a list of blocks.
+				const blocks = parse(wphtml);
+
 				let data = '';
 
 				blocks.forEach(block => { data += parseBlock(block) });
 
-				document.querySelector('code').innerText = data;
+				document.querySelector('code').innerText = format(data);
 			});
 		}
 	</script>
