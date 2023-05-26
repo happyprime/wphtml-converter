@@ -1,6 +1,6 @@
 # WPHTML Converter
 
-WPHTML is a [page](https://happyprime.github.io/wphtml-converter/) that converts WPHTML (WordPress block markup) to JS/JSON or (soon) PHP.
+WPHTML is a [page](https://happyprime.github.io/wphtml-converter/) that converts WPHTML (WordPress block markup) to its JS/JSON or PHP forms.
 
 [https://happyprime.github.io/wphtml-converter/](https://happyprime.github.io/wphtml-converter/)
 
@@ -42,6 +42,30 @@ When adding the template to JavaScript in an `innerBlocks` property, it needs to
 	{},
 	[]
 ],
+```
+
+And when adding it to PHP, it needs to be formatted like:
+
+```php
+array(
+	'core/heading',
+	array(
+		'level' => 1,
+		'style' => array(
+			'spacing' => array(
+				'margin' => array(
+					'top' => 'var:preset|spacing|30'
+				)
+			)
+		)
+	),
+	array()
+),
+array(
+	'core/paragraph',
+	array(),
+	array()
+),
 ```
 
 As your templates get more complicated, so does this translation—when done manually.
