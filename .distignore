@@ -1,9 +1,0 @@
-node_modules
-vendor
-.gitignore
-.git
-package-lock.json
-package.json
-composer.json
-composer.lock
-phpcs.xml
