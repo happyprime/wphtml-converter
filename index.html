@@ -1,9 +1,11 @@
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>WPHTML Converter</title>
 	<link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 	<h1>WPHTML Converter</h1>
 	<p>Convert WordPress block HTML to its JSON / JavaScript object form.</p>
@@ -16,30 +18,30 @@
 	<script type="module">
 		import { parse } from './parser.js';
 
-{
-	const parseBlock = (block) => {
-		let data = `[\n\t'${block.blockName}',\n${JSON.stringify(block.attrs, null, "\t")},\n\t[`;
+		{
+			const parseBlock = (block) => {
+				let data = `[\n\t'${block.blockName}',\n${JSON.stringify(block.attrs, null, "\t")},\n\t[`;
 
-		block.innerBlocks?.forEach((innerBlock) => {
-			data += `\n\t\t` + parseBlock(innerBlock) + `\n\t`;
-		});
+				block.innerBlocks?.forEach((innerBlock) => {
+					data += `\n\t\t` + parseBlock(innerBlock) + `\n\t`;
+				});
 
-		data += `]\n],`;
+				data += `]\n],`;
 
-		return data;
-	};
+				return data;
+			};
 
-	document.querySelector( 'button' ).addEventListener( 'click', ( evt ) => {
-		evt.preventDefault();
+			document.querySelector('button').addEventListener('click', (evt) => {
+				evt.preventDefault();
 
-		const blocks = parse( document.querySelector('textarea').value );
-		let data = '';
+				const blocks = parse(document.querySelector('textarea').value);
+				let data = '';
 
-		blocks.forEach( block => { data += parseBlock(block) });
+				blocks.forEach(block => { data += parseBlock(block) });
 
-		document.querySelector('#result').innerText = data;
-	});
-}
+				document.querySelector('#result').innerText = data;
+			});
+		}
 	</script>
 </body>
 </html>
