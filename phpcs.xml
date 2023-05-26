@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress coding standards for Happy Prime plugins">
+	<!-- Check all PHP files in directory tree by default. -->
+	<arg name="extensions" value="php"/>
+	<file>.</file>
+
+	<!-- Show progress and sniff codes in all reports -->
+	<arg value="ps"/>
+
+	<!-- Rules: Check PHP version compatibility. -->
+	<config name="testVersion" value="7.4-"/>
+
+	<!-- Ignore 3rd party libraries loaded by NPM -->
+	<exclude-pattern>/node_modules/</exclude-pattern>
+
+	<!-- Ignore 3rd party libraries loaded by Composer -->
+	<exclude-pattern>/vendor/</exclude-pattern>
+
+	<!-- Ignore generated build files. -->
+	<exclude-pattern>/build/</exclude-pattern>
+
+	<rule ref="PHPCompatibilityWP"/>
+	<rule ref="VariableAnalysis" />
+	<rule ref="WordPress-Extra" />
+	<rule ref="WordPress-Docs" />
+
+	<!-- WordPress should allow short array syntax. -->
+	<rule ref="Generic.Arrays.DisallowShortArraySyntax">
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
+	</rule>
+</ruleset>
