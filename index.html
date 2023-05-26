@@ -58,7 +58,7 @@
 			 * @param {string} code
 			 * @returns {string}
 			 */
-			const format = ( code ) => {
+			const format = (code) => {
 				const indentString = '\t';
 				let indentLevel = 0;
 				let output = '';
@@ -97,7 +97,14 @@
 				return output;
 			}
 
-			const parseBlock = ( block ) => {
+			/**
+			 * Parse a parsed block into a string representation of a
+			 * JavaScript object.
+			 *
+			 * @param {object} block
+			 * @returns {string}
+			 */
+			const parseBlock = (block) => {
 				let data = `['${block.blockName}',${JSON.stringify(block.attrs, null, "")},[`;
 
 				block.innerBlocks?.forEach((innerBlock) => {
@@ -109,7 +116,13 @@
 				return data;
 			};
 
-			document.querySelector('button').addEventListener('click', (evt) => {
+			/**
+			 * Handle a request to convert WPHTML to a string representation of
+			 * a JavaScript object.
+			 *
+			 * @param {Event} evt
+			 */
+			const handleConvertJS = (evt) => {
 				evt.preventDefault();
 
 				// Remove any newlines or tabs to avoid null blocks.
@@ -123,7 +136,9 @@
 				blocks.forEach(block => { data += parseBlock(block) });
 
 				document.querySelector('code').innerText = format(data);
-			});
+			}
+
+			document.querySelector('button').addEventListener('click', handleConvertJS);
 		}
 	</script>
 </body>
