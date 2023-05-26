@@ -18,6 +18,11 @@
 			margin: 5rem auto 0;
 		}
 
+		div ~ div {
+			max-width: 960px;
+			margin: 2rem auto 0;
+		}
+
 		textarea {
 			width: 100%;
 			height: 33vh;
@@ -30,9 +35,10 @@
 
 		pre {
 			margin: 2rem 0;
-			width: 100% - 0;
-			background: #ededed;
+			background: #efefef;
 			padding: 1.5rem;
+			overflow: auto;
+			border: 1px solid #ddd;
 		}
 
 		pre a {
@@ -50,6 +56,8 @@
 		<p>Convert WordPress block HTML to its JSON / JavaScript object form.</p>
 		<textarea></textarea>
 		<button type="submit">Convert to JS</button>
+	</div>
+	<div>
 		<pre><a id="copy-js-code" href="">Copy JS code</a><code id="js-code"></code></pre>
 		<p>Built by <a href="https://happyprime.co/">Happy Prime</a>, <a
 				href="https://github.com/happyprime/wphtml-converter/">contributors welcome</a>.</p>
