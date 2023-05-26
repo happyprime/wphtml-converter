@@ -57,7 +57,8 @@
 		<h1>WPHTML Converter</h1>
 		<p>Convert WordPress block HTML to its JSON / JavaScript object form.</p>
 		<textarea></textarea>
-		<button type="submit">Convert to JS</button>
+		<button id="convert-to-js" type="submit">Convert to JS</button>
+		<button id="convert-to-php" type="submit">Convert to PHP</button>
 	</div>
 	<div>
 		<pre><a id="copy-js-code" href="">Copy JS code</a><code id="js-code"></code></pre>
@@ -138,14 +139,12 @@
 			};
 
 			/**
-			 * Handle a request to convert WPHTML to a string representation of
-			 * a JavaScript object.
+			 * Convert WPHTML from the page's textarea into a string representation of
+			 * the JavaScript object.
 			 *
-			 * @param {Event} evt
+			 * @returns {string}
 			 */
-			const handleConvertJS = (evt) => {
-				evt.preventDefault();
-
+			const getJSCode = () => {
 				// Remove any newlines or tabs to avoid null blocks.
 				let wphtml = document.querySelector('textarea').value.replace(/\n|\t/g, '');
 
@@ -156,13 +155,55 @@
 
 				blocks.forEach(block => { data += parseBlock(block) });
 
-				document.querySelector('code').innerText = format(data);
+				return format(data);
 			}
 
-			document.querySelector('button').addEventListener('click', handleConvertJS);
+			/**
+			 * Handle a request to convert WPHTML to a string representation of
+			 * a JavaScript object.
+			 *
+			 * @param {Event} evt
+			 */
+			const handleConvertJS = (evt) => {
+				evt.preventDefault();
+
+				document.querySelector('code').innerText = getJSCode();
+			}
+
+			/**
+			 * Handle a request to convert WPHTML to a string representation of
+			 * a PHP array.
+			 *
+			 * @param {Event} evt
+			 */
+			const handleConvertPHP = (evt) => {
+				evt.preventDefault();
+
+				let data = getJSCode();
+
+				// Replace characters { and [ with their PHP counterparts.
+				data = data.replace(/{/g, 'array(');
+				data = data.replace(/\[/g, 'array(');
+
+				// Replace characters } and ] with their PHP counterparts.
+				data = data.replace(/}/g, ')');
+				data = data.replace(/]/g, ')');
+
+				// Replace characters " with '
+				data = data.replace(/"/g, "'");
+
+				// Replace characters : with => if within ''
+				data = data.replace(/'([^']*)':/g, "'$1' => ");
+
+				document.querySelector('code').innerText = data;
+			}
+
+			document.querySelector('#convert-to-js').addEventListener('click', handleConvertJS);
+			document.querySelector('#convert-to-php').addEventListener('click', handleConvertPHP);
 
 			document.querySelector('#copy-js-code').addEventListener('click', (evt) => {
 				evt.preventDefault();
+
 				navigator.clipboard.writeText(document.querySelector('#js-code').innerText);
 			})
 		}
