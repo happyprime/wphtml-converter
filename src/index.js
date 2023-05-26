@@ -1,5 +1,7 @@
 // WordPress dependencies.
+import { useBlockProps } from '@wordpress/block-editor';
 import { registerBlockType } from '@wordpress/blocks';
+import { Disabled } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 // Internal dependencies.
@@ -7,25 +9,25 @@ import metadata from './block.json';
 
 const Edit = () => {
 	return (
-		<>
-			<textarea name="block" rows="5" cols="40"></textarea>
+		<Disabled { ...useBlockProps() }>
+			<textarea name="block"></textarea>
 			<button type="submit">Submit</button>
 			<pre>
 				<code id="result"></code>
 			</pre>
-		</>
+		</Disabled>
 	);
 };
 
 const Save = () => {
 	return (
-		<>
-			<textarea name="block" rows="5" cols="40"></textarea>
+		<div { ...useBlockProps.save() } >
+			<textarea name="block"></textarea>
 			<button type="submit">Submit</button>
 			<pre>
 				<code id="result"></code>
 			</pre>
-		</>
+		</div>
 	);
 };
 

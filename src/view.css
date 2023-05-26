@@ -1,7 +1,14 @@
-.wp-site-blocks .toggle-block-hidden {
-	display: none;
+.wp-block-happyprime-wphtml-converter textarea {
+	width: 100%;
+	min-height: 20rem;
 }
 
-.editor-styles-wrapper .wp-block-happyprime-toggle-block {
-	display: inline-block;
+.wp-block-happyprime-wphtml-converter :is(code, pre) {
+	background: #fff;
+	font-size: 0.85rem;
+}
+
+.wp-block-happyprime-wphtml-converter pre {
+	margin-top: 3rem;
+	padding: 1.5rem 1rem;
 }
