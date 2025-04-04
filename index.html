@@ -128,6 +128,49 @@
 			 * @returns {string}
 			 */
 			const parseBlock = (block) => {
+
+				// Add support for RichText
+				let innerHTML = block?.innerHTML;
+				const innerBlocks = block?.innerBlocks;
+				let innerContentAttr = block.blockName === 'core/button' ? 'text' : 'content';
+
+				// Ideally we should get those infos from each block.json but we hardcode it for simplicity
+				let blockTagNames = '';
+				switch (block.blockName) {
+					case 'core/heading':
+						blockTagNames = 'h1,h2,h3,h4,h5,h6';
+						break;
+
+					case 'core/paragraph':
+						blockTagNames = 'p';
+						break;
+
+					case 'core/button':
+						blockTagNames = 'div,a';
+						break;
+				
+					default:
+						break;
+				}
+				const unAllowedTags = [
+					'div',
+					'script',
+					'style',
+				];
+
+				// Add content only if there is no innerBlocks & some innerHTML
+				if (innerHTML && !innerBlocks?.length) {
+
+					// Remove root tags from blocks
+					const blockTags = blockTagNames.split(',');
+					blockTags.map(tag => innerHTML = removeRootTag(tag, innerHTML));
+					
+					// Remove unallowed tags
+					unAllowedTags.forEach(tag => innerHTML = removeTag(tag, innerHTML));
+
+					block.attrs[ innerContentAttr ] = innerHTML;
+				}
+
 				let data = `['${block.blockName}',${JSON.stringify(block.attrs, null, "")},[`;
 
 				block.innerBlocks?.forEach((innerBlock) => {
@@ -138,6 +181,32 @@
 
 				return data;
 			};
+
+			/**
+			*  Remove root tag from html (helper taken from RichText code)
+			*  @link https://github.com/WordPress/gutenberg/blob/32a90263edaa9f6e6f0a9675722febeb2055143a/packages/block-editor/src/components/rich-text/native/index.native.js#L291
+			*/
+			const removeRootTag = ( tag, html ) => {
+				const openingTagRegexp = RegExp( '^<' + tag + '[^>]*>', 'gim' );
+				const closingTagRegexp = RegExp( '</' + tag + '>$', 'gim' );
+
+				return html
+					.replace( openingTagRegexp, '' )
+					.replace( closingTagRegexp, '' );
+			}
+
+			/**
+			*  Remove specific tag from html (helper taken from RichText code)
+			*  @link https://github.com/WordPress/gutenberg/blob/32a90263edaa9f6e6f0a9675722febeb2055143a/packages/block-editor/src/components/rich-text/native/index.native.js#L300
+			*/
+			const removeTag = ( tag, html ) => {
+				const openingTagRegexp = RegExp( '<' + tag + '>', 'gim' );
+				const closingTagRegexp = RegExp( '</' + tag + '>', 'gim' );
+
+				return html
+					.replace( openingTagRegexp, '' )
+					.replace( closingTagRegexp, '' );
+			}
 
 			/**
 			 * Convert WPHTML from the page's textarea into a string representation of
