@@ -8,7 +8,7 @@ It parses WPHTML into JS/JSON with a direct [copy](https://github.com/WordPress/
 
 ## What is it?
 
-When first building a template of blocks to be used as part of a block varation or other template, it is useful to do this work in the block editor. This results in markup like:
+When first building a template of blocks to be used as part of a block variation or other template, it is useful to do this work in the block editor. This results in markup like:
 
 ```html
 <!-- wp:heading {"level":1,"style":{"spacing":{"margin":{"top":"var:preset|spacing|30"}}}} -->
